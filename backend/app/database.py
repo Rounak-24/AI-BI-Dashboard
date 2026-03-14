@@ -14,7 +14,6 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-
 def get_db():
     """Dependency for FastAPI that yields a database session."""
     db = SessionLocal()
