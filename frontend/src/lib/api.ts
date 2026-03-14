@@ -14,6 +14,10 @@ export interface QueryResponse {
   error: string | null;
 }
 
+const req = {
+  "prompt": "What is the average monthly income by city tier?"
+}
+
 export async function queryBI(req: QueryRequest): Promise<QueryResponse> {
   const res = await fetch(`${API_BASE}/query`, {
     method: "POST",
