@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 export interface QueryRequest {
   prompt: string;
@@ -17,20 +17,41 @@ export interface QueryResponse {
 export async function queryBI(req: QueryRequest): Promise<QueryResponse> {
   const res = await fetch(`${API_BASE}/query`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(req),
   });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`API Error: ${text}`);
+  }
+
+  const data: QueryResponse = await res.json();
+  return data;
 }
 
-export async function uploadCSV(file: File): Promise<{ table_name: string; rows: number; columns: string[] }> {
-  const form = new FormData();
-  form.append("file", file);
+export interface UploadCSVResponse {
+  table_name: string;
+  rows: number;
+  columns: string[];
+}
+
+export async function uploadCSV(file: File): Promise<UploadCSVResponse> {
+  const formData = new FormData();
+  formData.append("file", file);
+
   const res = await fetch(`${API_BASE}/upload-csv`, {
     method: "POST",
-    body: form,
+    body: formData,
   });
-  if (!res.ok) throw new Error(await res.text());
-  return res.json();
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Upload Error: ${text}`);
+  }
+
+  const data: UploadCSVResponse = await res.json();
+  return data;
 }
