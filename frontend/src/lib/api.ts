@@ -19,6 +19,7 @@ const req = {
 }
 
 export async function queryBI(req: QueryRequest): Promise<QueryResponse> {
+  console.log(`${API_BASE}/query`)
   const res = await fetch(`${API_BASE}/query`, {
     method: "POST",
     headers: {

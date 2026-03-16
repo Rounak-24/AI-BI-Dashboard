@@ -44,3 +44,7 @@ next-env.d.ts
 .vscode/
 .idea/
 .cursor/
+
+
+# debug
+debug-5baeac.log
